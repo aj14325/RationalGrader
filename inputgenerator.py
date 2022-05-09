@@ -1,34 +1,40 @@
 import os.path
+import random
+import string
 
 
 def generate_input(cases,r):
 
-    files =[]
+    letters = []
+    input = []
+    for i in range(10):
+        letter = random.choice(string.ascii_letters)
+        if letter not in letters:
+            letters.append(letter)
+
+        numerator = r.randint(-100000, 100000)
+        denominator = r.randint(-100000, 100000)
+        input.append("input " + letter + " " + str(numerator) + " " + str(denominator))
+
     for i in range(cases):
-        height = r.randint(5, 50)
-        width = r.randint(5, 50)
-        prob = r.randint(25, 75)
-        sim = r.randint(10, 200)
-        grid = []
-        for j in range(height):
-            line = []
-            for k in range(width):
-                if r.randint(0, 100) < prob:
-                    line.append('X')
-                else:
-                    line.append('O')
-            grid.append(line)
-        filename = 'input'
-        counterstr = "{counter:02d}"
-        counter = 0
-        extention = ".txt"
-        while os.path.exists(filename + counterstr.format(counter=counter) + extention):
-            counter += 1
-        with open(filename + counterstr.format(counter=counter) + extention,'w') as f:
-            for line in grid:
-                for char in line:
-                    f.write(char)
-                f.write("\n")
-        files.append(filename + counterstr.format(counter=counter) + extention + " " + str(10) + "\n")
-    files.append("end 0")
-    return files
+        arg1 = random.choice(letters)
+        arg2 = random.choice(letters)
+        input.append("+ " + arg1 + " " + arg2)
+    for i in range(cases):
+        arg1 = random.choice(letters)
+        arg2 = random.choice(letters)
+        input.append("- " + arg1 + " " + arg2)
+    for i in range(cases):
+        arg1 = random.choice(letters)
+        arg2 = random.choice(letters)
+        input.append("* " + arg1 + " " + arg2)
+    for i in range(cases):
+        arg1 = random.choice(letters)
+        arg2 = random.choice(letters)
+        input.append("/ " + arg1 + " " + arg2)
+    for i in range(cases):
+        arg1 = random.choice(letters)
+        arg2 = random.choice(letters)
+        input.append("cmp " + arg1 + " " + arg2)
+    input.append("exit")
+    return input
